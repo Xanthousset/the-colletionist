@@ -57,14 +57,6 @@ export default {
   computed: {
     ...mapState(usePiniaStore, ['configuration' , 'authStatus' , 'user' , 'favorites']),
   },
-  // watch: {
-  //   getUser() {
-  //     this.setFavorites()
-  //   },
-  //   getFavorites() {
-  //     this.setFavorites()
-  //   }
-  // }
 }
 </script>
 

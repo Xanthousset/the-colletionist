@@ -12,9 +12,6 @@ import {watch} from "vue";
 export default {
   name: "Favorite",
   props : ['movieId'],
-  setup () {
-
-  },
   methods : {
     ...mapActions(usePiniaStore, ['fetchFavorites' , 'setRequestToken' , 'setShowAuth']),
     async onHeartClick() {
@@ -76,11 +73,6 @@ export default {
   computed : {
     ...mapState(usePiniaStore, ['user' , 'authStatus']),
   },
-  // watch : {
-  //   getUser(newUser) {
-  //     this.checkUsertatus(newUser)
-  //   }
-  // }
 }
 </script>
 
