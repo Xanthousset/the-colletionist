@@ -1,0 +1,13 @@
+$red : #c32a2a;
+$gold : #C5A844;
+$black : #04080F;
+
+$md : 769px;
+$lg : 1025px;
+
+// animation speeds based on Material Design recommendation
+$standard : all .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+$accelerated : all .3s cubic-bezier(0.4, 0.0, 1, 1);
+$decelerated : all .3s cubic-bezier(0.0, 0.0, 0.2, 1);
+
+
