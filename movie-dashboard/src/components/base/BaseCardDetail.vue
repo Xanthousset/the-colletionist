@@ -4,7 +4,7 @@
     <div class="card-info">
       <Favorite @click.stop :movie-id="card.movie.id"/>
       <div class="tw-flex tw-justify-center tw-gap-6 tw-flex-wrap tw-mb-6">
-        <h4 v-for="genre in genres" :key="genre.id" class="tw-font-semibold genre">
+        <h4 v-for="genre in movieGenres" :key="genre.id" class="tw-font-semibold genre">
           {{genre.name}}
         </h4>
       </div>
@@ -28,6 +28,8 @@
 
 <script>
 import Favorite from "@/components/base/Favorite";
+import {mapState , mapActions} from "pinia/dist/pinia";
+import {usePiniaStore} from "@/store/piniaStore";
 export default {
   name: "BaseCardDetail",
   components: {Favorite},
@@ -43,18 +45,20 @@ export default {
     } , 300)
   },
   methods: {
+    ...mapActions(usePiniaStore, ['setBackdrop' , 'setBlur' , 'setSelectedMovieId']),
     onCardClick() {
-      this.$store.commit('setSelectedMovieId' , null)
-      this.$store.commit('setBackdrop' , null)
-      this.$store.commit('setBlur' , false)
+      this.setBackdrop(null)
+      this.setBlur(false)
+      this.setSelectedMovieId(null)
       this.$emit('cardSelected' , null)
       this.$emit('cardHover', false)
     }
   },
   computed : {
-    genres() {
+    ...mapState(usePiniaStore, ['genres']),
+    movieGenres() {
       //get movie genres
-      const genresList = this.$store.state.genres
+      const genresList = this.genres
 
       const cardGenres = genresList.filter(genre => this.card.movie.genre_ids.includes(genre.id))
 

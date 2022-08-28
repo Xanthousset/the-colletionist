@@ -5,19 +5,26 @@
 
 <script>
 import axios from "axios";
+import {mapActions , mapState , storeToRefs } from "pinia";
+import {usePiniaStore} from "@/store/piniaStore";
+import {watch} from "vue";
 
 export default {
   name: "Favorite",
   props : ['movieId'],
+  setup () {
+
+  },
   methods : {
+    ...mapActions(usePiniaStore, ['fetchFavorites' , 'setRequestToken' , 'setShowAuth']),
     async onHeartClick() {
-      if(!this.getAuthStatus) { // if we're not connected yet
+      if(!this.authStatus) { // if we're not connected yet
         const auth = await axios.get('https://api.themoviedb.org/3/authentication/token/new')
-        this.$store.commit('setRequestToken' , auth.data.request_token)
-        this.$store.commit('setShowAuth' , true)
+        this.setRequestToken(auth.data.request_token)
+        this.setShowAuth(true)
       } else {
         // register movie as favorite
-        this.registerMovie()
+        await this.registerMovie()
       }
     },
 
@@ -29,13 +36,13 @@ export default {
 
       this.colorHeart(!favorite)
 
-      await axios.post(`https://api.themoviedb.org/3/account/${this.getUser.id}/favorite` , {
+      await axios.post(`https://api.themoviedb.org/3/account/${this.user.id}/favorite` , {
         "media_type": "movie",
         "media_id": this.movieId,
         "favorite": !favorite
       })
 
-      this.$store.dispatch('fetchFavorites')
+      await this.fetchFavorites()
 
     },
     colorHeart(newFavState) {
@@ -57,21 +64,23 @@ export default {
     }
   },
   created() {
-    this.checkUsertatus(this.getUser)
+    const piniaStore = usePiniaStore()
+
+    const {user} = storeToRefs(piniaStore)
+
+    watch(user , (newUser) => {
+      this.checkUsertatus(newUser)
+    })
+    this.checkUsertatus(this.user)
   },
   computed : {
-   getUser() {
-      return this.$store.state.user
-    },
-    getAuthStatus() {
-      return this.$store.state.authStatus
-    }
+    ...mapState(usePiniaStore, ['user' , 'authStatus']),
   },
-  watch : {
-    getUser(newUser) {
-      this.checkUsertatus(newUser)
-    }
-  }
+  // watch : {
+  //   getUser(newUser) {
+  //     this.checkUsertatus(newUser)
+  //   }
+  // }
 }
 </script>
 

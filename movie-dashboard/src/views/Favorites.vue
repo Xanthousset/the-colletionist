@@ -1,13 +1,16 @@
 <template>
   <div class="tw-relative tw-z-className">
     <h1 class=" tw-text-center tw-font-semibold tw-text-7xl tw-my-24 tw-text-white">My Favorites</h1>
-    <BaseListing v-if="connected" :list="favorites"/>
+    <BaseListing v-if="connected" :list="favList"/>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import BaseListing from "@/components/base/BaseListing";
+import { usePiniaStore} from "@/store/piniaStore";
+import { mapActions , mapState, storeToRefs } from 'pinia'
+import {watch} from "vue";
 
 export default {
   name: "Favorites",
@@ -15,54 +18,53 @@ export default {
   data() {
     return {
       connected: false,
-      favorites: null,
+      favList: null,
     }
   },
   async created() {
-    if (!this.getConfiguration) { // check if we have the api configuration and fetch it
-      await this.$store.dispatch('baseData')
+    if (!this.configuration) { // check if we have the api configuration and fetch it
+      await this.baseData()
     }
-    if (!this.getAuthStatus) { // if we're not connected yet
+    if (!this.authStatus) { // if we're not connected yet
       await axios.get('https://api.themoviedb.org/3/authentication/token/new').then( (res) => {
-        this.$store.commit('setRequestToken', res.data.request_token)
-        this.$store.commit('setShowAuth', true)
+        this.setRequestToken(res.data.request_token)
+        this.setShowAuth(true)
         this.connected = true
       })
 
     } else {
       // fetch user favorites if we're already connected when entering page
       this.connected = true
-      this.$store.dispatch('fetchFavorites')
+      await this.fetchFavorites()
       this.setFavorites()
     }
+
+    const piniaStore = usePiniaStore()
+
+    const {favorites} = storeToRefs(piniaStore)
+
+    watch(favorites , () => {
+      this.setFavorites()
+    })
+
   },
   methods: {
+    ...mapActions(usePiniaStore, ['baseData' , 'fetchFavorites' , 'setRequestToken' , 'setShowAuth']),
     setFavorites() {
-      this.favorites = this.$store.state.favorites
-    }
+      this.favList = this.favorites
+    },
   },
   computed: {
-    getConfiguration() {
-      return this.$store.state.configuration
-    },
-    getAuthStatus() {
-      return this.$store.state.authStatus
-    },
-    getUser() {
-      return this.$store.state.user
-    },
-    getFavorites() {
-      return this.$store.state.favorites
-    }
+    ...mapState(usePiniaStore, ['configuration' , 'authStatus' , 'user' , 'favorites']),
   },
-  watch: {
-    getUser() {
-      this.setFavorites()
-    },
-    getFavorites() {
-      this.setFavorites()
-    }
-  }
+  // watch: {
+  //   getUser() {
+  //     this.setFavorites()
+  //   },
+  //   getFavorites() {
+  //     this.setFavorites()
+  //   }
+  // }
 }
 </script>
 

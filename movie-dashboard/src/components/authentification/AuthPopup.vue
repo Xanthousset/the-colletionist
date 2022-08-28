@@ -1,5 +1,5 @@
 <template>
-  <div v-show="showAuth" class="popupLogin" @click.self="closeAuth">
+  <div v-show="showAuthCheck" class="popupLogin" @click.self="closeAuth">
     <div class="tw-bg-white tw-text-center tw-rounded-lg tw-p-12 popup__box">
       <p class="tw-text-3xl">To register and see your favorite movies you need to login to your TMBD account</p>
       <button class="tw-text-white tw-bg-red tw-font-semibold tw-rounded-lg tw-p-6 tw-text-3xl tw-mt-12" @click="openAuth">Link Account</button>
@@ -9,45 +9,40 @@
 
 <script>
 import axios from "axios";
+import {usePiniaStore} from "@/store/piniaStore";
+import {mapActions , mapState } from "pinia";
 export default {
   name: "AuthPopup",
   computed : {
-    showAuth() {
+    ...mapState(usePiniaStore, ['showAuth' , 'authStatus' , 'requestToken' , 'requestToken']),
+    showAuthCheck() {
       // show authentication popup if account is not linked yet
-      if(this.getRequestToken && !this.authStatus && this.popupStatus) {
+      if(this.showAuth && !this.authStatus && this.requestToken) {
         return true
       }
       return false
     },
-    popupStatus() {
-      return this.$store.state.showAuth
-    },
-    authStatus() {
-      return this.$store.state.authStatus
-    },
-    getRequestToken() {
-      return this.$store.state.requestToken
-    }
   },
   methods : {
+    ...mapActions(usePiniaStore, ['fetchFavorites' , 'setShowAuth' , 'setAuthStatus' , 'setSessionId' , 'setUser']),
     openAuth() {
       // redirect to TMBD confirmation page
-      window.open(`https://www.themoviedb.org/authenticate/${this.getRequestToken}`,'_blank');
+      window.open(`https://www.themoviedb.org/authenticate/${this.requestToken}`,'_blank');
     },
     async closeAuth() {
-      this.$store.commit('setShowAuth' , false)
+      this.setShowAuth(false)
 
       // Register Session ID
       const resp = await axios.post(`https://api.themoviedb.org/3/authentication/session/new` , {
-        request_token: this.getRequestToken
+        request_token: this.requestToken
       })
       if(resp.data.success) {
-        this.$store.commit('setAuthStatus' , resp.data.success)
-        this.$store.commit('setSessionId' , resp.data.session_id)
+        this.setAuthStatus(resp.data.success)
+        this.setSessionId(resp.data.session_id)
 
         const account = await axios.get(`https://api.themoviedb.org/3/account`)
-        this.$store.commit('setUser' , account.data)
-        this.$store.dispatch('fetchFavorites')
+        this.setUser(account.data)
+        await this.fetchFavorites()
       }
     }
   }

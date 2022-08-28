@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-relative" :class="{selected : selected}" @mouseenter="onCardEnter" @mouseleave="onCardLeave" ref="card">
+  <div class="tw-relative" :class="{'selectedMovieId === movie.id' : selected}" @mouseenter="onCardEnter" @mouseleave="onCardLeave" ref="card">
     <div class="tw-cursor card" @click="onCardClick">
       <img :src="moviePoster" />
     </div>
@@ -7,6 +7,9 @@
 </template>
 
 <script>
+
+import {mapActions , mapState} from "pinia";
+import {usePiniaStore} from "@/store/piniaStore";
 
 export default {
   name: "BaseCard",
@@ -19,35 +22,34 @@ export default {
     }
   },
   computed : {
+    ...mapState(usePiniaStore, ['configuration' , 'selectedMovieId' ]),
     selected() {
       // check if this movie card is the one selected
-      return this.$store.state.selectedMovieId === this.movie.id;
-    },
-    getSelectedMovieId() {
-      return this.$store.state.selectedMovieId
+      return this.selectedMovieId === this.movie.id;
     },
     moviePoster() {
-      const imageConf = this.$store.state.configuration.images
+      const imageConf = this.configuration.images
       return imageConf.base_url + imageConf.poster_sizes[4] + this.movie.poster_path
     },
     movieBackdrop() {
-      const imageConf = this.$store.state.configuration.images
+      const imageConf = this.configuration.images
       return imageConf.base_url + imageConf.backdrop_sizes[3] + this.movie.backdrop_path
     },
   },
   methods : {
+    ...mapActions(usePiniaStore, ['setBackdrop' , 'setBlur' , 'setSelectedMovieId']),
     onCardEnter() {
       // change backdrop when we hover a card and none is currently selected
-      if(this.getSelectedMovieId === null) {
+      if(this.selectedMovieId === null) {
         this.$emit('cardHover', true)
-        this.$store.commit('setBackdrop' , this.movieBackdrop)
+        this.setBackdrop(this.movieBackdrop)
       }
     },
     onCardLeave() {
       // remove backdrop when we hover a card and none is currently selected
-      if(this.getSelectedMovieId === null) {
+      if(this.selectedMovieId === null) {
         this.$emit('cardHover', false)
-        this.$store.commit('setBackdrop' , null)
+        this.setBackdrop(null)
       }
     },
     onCardClick() {
@@ -62,12 +64,14 @@ export default {
     },
     openCard(top , left) {
 
-      this.$store.commit('setSelectedMovieId' , this.movie.id)
-      this.$store.commit('setBlur' , true)
+
+      this.setSelectedMovieId(this.movie.id)
+      this.setBlur(true)
       this.height = this.$refs.card.offsetHeight
       this.top = top
       this.left = left
-      this.$store.commit('setBackdrop' , this.movieBackdrop)
+      this.setBackdrop(this.movieBackdrop)
+
       // movie prop passed to BaseCardDetail
       const movie = {
         movie : this.movie,

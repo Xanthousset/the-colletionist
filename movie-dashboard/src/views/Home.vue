@@ -10,6 +10,8 @@
 // @ is an alias to /src
 import axios from "axios";
 import BaseListing from "@/components/base/BaseListing";
+import { usePiniaStore} from "@/store/piniaStore";
+import { mapActions , mapState} from 'pinia'
 export default {
   name: 'Home',
   components: {BaseListing},
@@ -19,8 +21,8 @@ export default {
     }
   },
   async created() {
-    if(!this.getConfiguration) { // check if we have the api configuration and fetch it
-      await this.$store.dispatch('baseData')
+    if(!this.configuration) { // check if we have the api configuration and fetch it
+      await this.baseData()
     }
     // fetch trending movie and show only the top 4
     const trendingList = await axios.get('https://api.themoviedb.org/3/trending/movie/week');
@@ -28,9 +30,10 @@ export default {
     this.trending = trending
   },
   computed: {
-    getConfiguration() {
-      return this.$store.state.configuration
-    }
+    ...mapState(usePiniaStore, ['configuration']),
+  },
+  methods : {
+    ...mapActions(usePiniaStore, ['baseData'])
   }
 }
 </script>

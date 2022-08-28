@@ -31,6 +31,8 @@
 <script>
 
 import BaseTab from "@/components/base/BaseTab";
+import {usePiniaStore} from "@/store/piniaStore";
+import {mapActions} from "pinia";
 
 export default {
   name: "BaseTabsHandler",
@@ -46,9 +48,10 @@ export default {
     this.selectTab(0)
   },
   methods: {
+    ...mapActions(usePiniaStore, ['resetBackdrop']),
     selectTab (i) {
       this.selectedIndex = i
-      this.$store.dispatch('resetBackdrop')
+      this.resetBackdrop()
     },
     toggleListing() {
       // open tab header on click rather than hover for mobile / tablet

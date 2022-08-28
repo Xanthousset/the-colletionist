@@ -16,6 +16,9 @@
 </template>
 
 <script>
+import {mapActions} from "pinia/dist/pinia";
+import {usePiniaStore} from "@/store/piniaStore";
+
 export default {
   name: "Header",
   data() {
@@ -24,9 +27,7 @@ export default {
     }
   },
   methods : {
-    resetBackdrop() {
-      this.$store.dispatch('resetBackdrop')
-    }
+    ...mapActions(usePiniaStore, ['resetBackdrop']),
   }
 }
 </script>

@@ -11,6 +11,7 @@ import axios from "axios";
 import BaseListing from "@/components/base/BaseListing";
 import ScrollLoading from "@/components/loading/ScrollLoading";
 
+
 export default {
   name: "BaseTab",
   components: {ScrollLoading, BaseListing},
@@ -29,6 +30,7 @@ export default {
     this.page++
   },
   methods : {
+
     async fetchNextPage() {
       // infinite scroll | load more movies
       if(!this.loading) {

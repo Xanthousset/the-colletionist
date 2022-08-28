@@ -21,37 +21,21 @@
     <span></span>
     <span></span>
     <transition name="fade">
-      <img class="tw-z-10 backdrop" v-if="backdrop" :class="{blur : blur}" :src="backdrop" :key="backdrop"/>
+      <img class="tw-z-10 backdrop" v-if="backdrop" :class="{blur : backdropBlur}" :src="backdrop" :key="backdrop"/>
     </transition>
   </div>
 
 </template>
 
 <script>
+import {mapState} from "pinia/dist/pinia";
+import {usePiniaStore} from "@/store/piniaStore";
+
 export default {
   name: "Background",
-  data() {
-    return {
-      backdrop : null,
-      blur : false
-    }
-  },
   computed : {
-    backdropImage() {
-      return this.$store.state.backdrop
-    },
-    backdropBlur() {
-      return this.$store.state.backdropBlur
-    }
+    ...mapState(usePiniaStore, ['backdrop' , 'backdropBlur']),
   },
-  watch : {
-    backdropImage(newBackdrop) {
-      this.backdrop = newBackdrop
-    },
-    backdropBlur(blurState) {
-      this.blur = blurState
-    }
-  }
 }
 </script>
 

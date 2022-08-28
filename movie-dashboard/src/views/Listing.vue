@@ -4,7 +4,9 @@
 
 <script>
 import BaseTabsHandler from "@/components/base/BaseTabsHandler";
-
+import { usePiniaStore} from "@/store/piniaStore";
+import { mapActions } from 'pinia'
+import {mapState} from "pinia/dist/pinia";
 export default {
   name: "Listing",
   components: {BaseTabsHandler},
@@ -14,18 +16,16 @@ export default {
     }
   },
   async created() {
-    if(!this.getConfiguration) { // check if we have the api configuration and fetch it
-      await this.$store.dispatch('baseData')
+    if(!this.configuration) { // check if we have the api configuration and fetch it
+      await this.baseData()
     }
   },
 
   computed: {
-    getConfiguration() {
-      return this.$store.state.configuration
-    },
-    genres() {
-      return this.$store.state.genres
-    }
+    ...mapState(usePiniaStore, ['configuration' , 'genres']),
+  },
+  methods : {
+    ...mapActions(usePiniaStore, ['baseData'])
   }
 
 }
