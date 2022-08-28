@@ -1,4 +1,9 @@
-# movie-dashboard
+# movie-dashboard 
+
+## QWtach
+```
+Front-dev test for the colletionist
+```
 
 ## Project setup
 ```
