@@ -29,11 +29,11 @@ export default {
     },
     moviePoster() {
       const imageConf = this.configuration.images
-      return imageConf.base_url + imageConf.poster_sizes[4] + this.movie.poster_path
+      return imageConf.secure_base_url + imageConf.poster_sizes[4] + this.movie.poster_path
     },
     movieBackdrop() {
       const imageConf = this.configuration.images
-      return imageConf.base_url + imageConf.backdrop_sizes[3] + this.movie.backdrop_path
+      return imageConf.secure_base_url + imageConf.backdrop_sizes[3] + this.movie.backdrop_path
     },
   },
   methods : {

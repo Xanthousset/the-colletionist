@@ -3,7 +3,7 @@
     <h1 class="tw-text-center tw-font-semibold tw-text-7xl tw-my-24 tw-text-white">My Favorites</h1>
     <BaseListing v-if="authStatus" :list="favList"/>
     <div class="tw-w-10/12 tw-mx-auto tw-flex tw-flex-col tw-justify-center tw-items-center" v-else>
-      <h2 class="tw-text-center tw-font-semibold tw-text-7xl tw-my-24 tw-text-white">You need to link your account to access your favorite movies</h2>
+      <h2 class="tw-text-center tw-font-semibold tw-text-5xl tw-my-12 md:tw-my-24 tw-text-white">You need to link your account to access your favorite movies</h2>
       <BaseButton @click="linkAccount" class="tw-mt-12" text="I have a TMBD Account"/>
     </div>
   </div>

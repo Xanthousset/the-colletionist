@@ -97,6 +97,7 @@ export const usePiniaStore = defineStore('piniaStore', {
 		async baseData() {
 			const genresList = await axios.get('https://api.themoviedb.org/3/genre/movie/list?language=en-US');
 			const configuration = await axios.get('https://api.themoviedb.org/3/configuration');
+			console.log(configuration.data)
 			this.genres = genresList.data.genres
 			this.configuration = configuration.data
 		},
