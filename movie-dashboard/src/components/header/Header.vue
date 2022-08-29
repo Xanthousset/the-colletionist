@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-fixed tw-bottom-0 tw-z-40 tw-flex md:tw-block tw-items-center tw-justify-center tw-justify-start" :class="{hovered : hover}" id="nav">
+  <div class="tw-fixed tw-bottom-0 tw-flex md:tw-block tw-items-center tw-justify-center tw-justify-start" :class="{hovered : hover}" id="nav">
     <router-link class="tw-flex tw-items-center tw-pr-12 md:tw-pr-0 tw-pl-12 md:tw-mb-12" to="/" @mouseover="hover = true" @mouseleave="hover = false" @click="resetBackdrop">
       <img class="tw-w-12" src="@/assets/images/movie-roll.svg"/>
       <h2 class="tw-hidden md:tw-block tw-ml-12 tw-text-white tw-text-3xl tw-whitespace-nowrap tw-font-semibold">Home</h2>
@@ -38,6 +38,7 @@ export default {
   height: auto;
   padding: 1.5rem 1.5rem;
   background-color: $black;
+  z-index: 60;
   transition: $standard;
   @media (min-width: $md) {
     padding: 3rem 3rem 3rem 0;

@@ -23,6 +23,9 @@ export default {
   width: 30rem;
   max-width: calc(100vw - 3rem);
   overflow: hidden;
+  @media (min-width: $md) {
+    left: calc(50% + 4.75rem);
+  }
 }
 path {
   fill: #fff;

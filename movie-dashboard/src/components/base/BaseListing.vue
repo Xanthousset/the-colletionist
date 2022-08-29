@@ -15,6 +15,7 @@
 import BaseCard from "@/components/base/BaseCard";
 import BaseCardDetail from "@/components/base/BaseCardDetail";
 import ListingLoader from "@/components/loading/ListingLoader";
+
 export default {
   name: "BaseListing",
   components: {ListingLoader, BaseCardDetail, BaseCard},

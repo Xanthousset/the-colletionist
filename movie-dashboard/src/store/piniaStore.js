@@ -73,9 +73,6 @@ export const usePiniaStore = defineStore('piniaStore', {
 		setGenres(obj) {
 			this.genres = obj
 		},
-		setConfiguration(obj) {
-			this.configuration = obj
-		},
 		setUser(obj) {
 			this.user = obj
 		},
@@ -102,13 +99,12 @@ export const usePiniaStore = defineStore('piniaStore', {
 			const configuration = await axios.get('https://api.themoviedb.org/3/configuration');
 			this.genres = genresList.data.genres
 			this.configuration = configuration.data
-			console.log(this.genres)
-			console.log(this.configuration)
 		},
 		resetBackdrop() {
 			this.selectedMovieId = null
 			this.backdrop = null
 			this.backdropBlur = null
+			this.showAuth = false
 		},
 		async fetchFavorites() {
 
