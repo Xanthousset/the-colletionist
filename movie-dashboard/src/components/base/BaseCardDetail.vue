@@ -2,7 +2,11 @@
   <div class="card-popup" :class="{selected : !animate}" :style="[cardPosition]" @click="onCardClick">
     <img class="poster" :src="cardImage" />
     <div class="card-info">
-      <Favorite @click.stop :movie-id="card.movie.id"/>
+      <div class="tw-mb-6 tw-flex tw-justify-between tw-items-center">
+        <Favorite @click.stop :movie-id="card.movie.id"/>
+        <img class="tw-cursor-pointer tw-w-11" src="@/assets/images/cross.svg"/>
+      </div>
+
       <div class="tw-flex tw-justify-center tw-gap-6 tw-flex-wrap tw-mb-6">
         <h4 v-for="genre in movieGenres" :key="genre.id" class="tw-font-semibold genre">
           {{genre.name}}

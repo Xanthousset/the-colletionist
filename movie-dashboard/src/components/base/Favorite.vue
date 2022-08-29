@@ -78,7 +78,6 @@ export default {
 
 <style lang="scss" scoped>
 #heart {
-  margin-bottom: 1.5rem;
   cursor: pointer;
   transition: $standard;
   fill: rgba(0,0,0,0);
