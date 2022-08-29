@@ -149,7 +149,7 @@ export default {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
     padding-bottom: 9rem;
     @media (min-width: $md) {
-      padding-bottom: 0;
+      padding-bottom: 3rem;
       flex-shrink: 1;
       flex-grow: 0;
     }
