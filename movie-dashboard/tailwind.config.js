@@ -36,7 +36,6 @@ module.exports = {
     extend: {},
   },
   variants: {
-    margin: ['last' , 'responsive'],
     extend: {
     },
   },
