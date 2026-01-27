@@ -1,9 +1,12 @@
 # movie-dashboard 
 
 ## QWtach
+
 ```
-Front-dev test for the colletionist
+Front-dev test for a job application
 ```
+
+## Demo available at https://qwatch.pages.dev/
 
 ## Project setup
 ```
